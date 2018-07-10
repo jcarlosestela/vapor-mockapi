@@ -1,5 +1,5 @@
 //
-//  ModelMock.swift
+//  StatusMock.swift
 //  App
 //
 //  Created by José Estela on 10/7/18.
@@ -8,15 +8,14 @@
 import Foundation
 import Vapor
 
-struct ModelMock<T: Codable>: Mockable {
+struct StatusMock: Mockable {
     
     let method: HTTPMethod
     let path: String
-    let object: T
+    let status: HTTPStatus
     
     func handleResponse(_ req: Request) throws -> Future<Response> {
-        let data = try JSONEncoder().encode(self.object)
-        let response = req.makeResponse(HTTPBody(data: data))
+        let response = req.makeResponse(http: HTTPResponse(status: self.status))
         return req.future(response)
     }
 }

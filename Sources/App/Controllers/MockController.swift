@@ -19,7 +19,8 @@ struct MockController: RouteCollection {
             router,
             mocks: [
                 JSONFileMock(method: .GET, path: "api/test", file: "test.json"),
-                ModelMock(method: .GET, path: "test2", object: Test(name: "prueba"))
+                ModelMock(method: .GET, path: "test2", object: Test(name: "prueba")),
+                StatusMock(method: .GET, path: "test/error", status: .notAcceptable)
             ]
         )
     }
