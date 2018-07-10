@@ -40,10 +40,6 @@ struct MockError: Equatable, Hashable {
 
 class ErrorManager {
     
-    // MARK: - Public attributes
-    
-    static let `default` = ErrorManager()
-    
     // MARK: - Private attributes
     
     private var errors = Set<MockError>()

@@ -15,13 +15,19 @@ struct MockController: RouteCollection {
     /// - Parameter router:
     /// - Throws:
     func boot(router: Router) throws {
-        try MocksManager.with(
-            router,
-            mocks: [
-                JSONFileMock(method: .GET, path: "api/test", file: "test.json"),
-                ModelMock(method: .GET, path: "test2", object: Test(name: "prueba")),
-                StatusMock(method: .GET, path: "test/error", status: .notAcceptable)
-            ]
-        )
+        try router.register(mocks: [
+            JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badRequest, every: 1),
+            ModelMock(method: .GET, path: "test2", object: Test(name: "prueba")),
+            StatusMock(method: .GET, path: "test/error", status: .notAcceptable)
+        ])
+    }
+}
+
+extension Router {
+    
+    func register(mocks: [Mockable]) throws {
+        try mocks.forEach { mock in
+            try mock.addRoute(to: self)
+        }
     }
 }
