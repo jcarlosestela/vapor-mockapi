@@ -16,7 +16,7 @@ struct MockController: RouteCollection {
     /// - Throws:
     func boot(router: Router) throws {
         try router.register(mocks: [
-            JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badRequest, every: 1),
+            JSONFileMock(method: .GET, path: "api/test", file: "test.json"),
             ModelMock(method: .GET, path: "test2", object: Test(name: "prueba")),
             StatusMock(method: .GET, path: "test/error", status: .notAcceptable)
         ])

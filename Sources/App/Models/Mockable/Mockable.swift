@@ -20,23 +20,21 @@ protocol Mockable {
 extension Mockable {
     
     func addRoute(to router: Router) throws {
-        router.on(self.method, at: self.path) { req in
-            try MocksManager.shared.handle(mock: self, on: req)
-        }
+        router.on(self.method, at: self.path, use: handleResponse)
     }
     
     func fail(with status: HTTPResponseStatus, every: Int) -> Mockable {
-        MocksManager.shared.register(error: MockError(path: self.path, status: status, every: every))
+        MocksManager.shared.registerMiddleware(error: .failEvery(status, every), for: self.path)
         return self
     }
     
     func fail(with status: HTTPResponseStatus, probability: Float) -> Mockable {
-        MocksManager.shared.register(error: MockError(path: self.path, status: status, probability: probability))
+        MocksManager.shared.registerMiddleware(error: .failWithProbability(status, probability), for: self.path)
         return self
     }
     
     func delay(_ delay: Double) -> Mockable {
-        MocksManager.shared.register(delay: MockDelay(path: self.path, delay: delay))
+        MocksManager.shared.registerMiddleware(delay: delay, for: self.path)
         return self
     }
 }
