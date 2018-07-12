@@ -10,15 +10,11 @@ import Vapor
 
 struct MockController: RouteCollection {
     
-    /// Here we have to define all routes
-    ///
-    /// - Parameter router:
-    /// - Throws:
     func boot(router: Router) throws {
         try router.register(mocks: [
-            JSONFileMock(method: .GET, path: "api/test", file: "test.json"),
-            ModelMock(method: .GET, path: "test2", object: Test(name: "prueba")),
-            StatusMock(method: .GET, path: "test/error", status: .notAcceptable)
+            // JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badGateway, every: 1),
+            // ModelMock(method: .GET, path: "api/test2", object: AnyObject(name: "test")),
+            // StatusMock(method: .GET, path: "api/test/error", status: .notAcceptable).delay(1.5)
         ])
     }
 }
