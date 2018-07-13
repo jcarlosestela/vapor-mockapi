@@ -3,7 +3,7 @@
 ----
 
 ![Language](https://img.shields.io/badge/Language-Swift-orange.svg)
-![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 
 A quick way for creating mock APIs without taking so much time.
 
@@ -25,8 +25,6 @@ There are some pre-defined mocks that are available:
 * ModelMock
 * StatusMock
 
-Also, you can create your own by conforming the protocol `Mockable`.
-
 Let's explain how it works:
 
 ### JSONFileMock
@@ -42,7 +40,7 @@ JSONFileMock(method: .GET, path: "api/users", file: "user-mock.json")
 A model mock. You have to use an object that conforms the `Codable` protocol. An example of usage:
 
 ```swift
-ModelMock(method: .GET, path: "api/users", object: User(name: "mock user"))
+ModelMock(method: .GET, path: "api/users", mock: User(name: "mock user"))
 ```
 
 ### StatusMock
@@ -59,12 +57,33 @@ Finally, in your `MockController` you have a method where you can register an ar
 func boot(router: Router) throws {
     try router.register(mocks: [
         JSONFileMock(method: .GET, path: "api/test", file: "test.json"),
-        ModelMock(method: .GET, path: "api/test2", object: AnyObject(name: "test")),
+        ModelMock(method: .GET, path: "api/test2", mock: AnyObject(name: "test")),
         StatusMock(method: .GET, path: "api/test/error", status: .notAcceptable)
     ])
 }
 ```
 
+Also, you can create your own mocks by conforming the protocol `Mockable`.
+
 ## MockMiddleware
 
-TBD
+The project contains a MockMiddleware that provide some features to the mocks already explained. This middleware is set up by default in the `configure.swift` file.
+
+There are two features implemented:
+
+* Error (for returning errors in some cases)
+* Delay (for delaying the response)
+
+Every `Mockable` instance has some methods that provides a way for changing the behaviour of the mock itself. The methods already implemented are:
+
+```swift
+func fail(with status: HTTPResponseStatus, every: Int) -> Mockable
+func fail(with status: HTTPResponseStatus, probability: Float) -> Mockable
+func delay(_ delay: Double) -> Mockable
+```
+
+An example of usage could be:
+
+```swift
+JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badRequest, every: 1)
+```
