@@ -11,7 +11,7 @@ A quick way for creating mock APIs without taking so much time.
 
 As it is a Vapor template, you have to execute the following command:
 
-`vapor new project-name --template=jcarlosestela/mockapi`
+`vapor new project-name --template=jcarlosestela/vapor-mockapi`
 
 then, use the `vapor xcode -y` for creating the Xcode project and open it.
 
