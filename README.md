@@ -3,7 +3,7 @@
 ----
 
 ![Language](https://img.shields.io/badge/Language-Swift-orange.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)
 
 A quick way for creating mock APIs without taking so much time.
 
@@ -87,3 +87,19 @@ An example of usage could be:
 ```swift
 JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badRequest, every: 1)
 ```
+
+## GatewayMiddleware
+
+This middleware provides the feature of calling to your original API with the same params & headers received. This is very useful if you want to mock some method of your API but not the full API (and you want the original behaviour).  
+
+You have two ways of using it:
+
+```swift
+middlewares.use(GatewayMiddleware(to: "https://yourapi.com", routes: router.routes))
+// or
+middlewares.use(GatewayMiddleware(to: "https://yourapi.com", routes: ["/GET/api/v1/login"]))
+```
+
+In the first one any request with different path to the paths included in `router.routes` will be requested to `https://yourapi.com` with the same params & headers. 
+
+In the second one any request with different path to "/GET/api/v1/login" will be requested to `https://yourapi.com` with the same params & headers.
