@@ -95,9 +95,9 @@ This middleware provides the feature of calling to your original API with the sa
 You have two ways of using it:
 
 ```swift
-middlewares.use(GatewayMiddleware(to: "https://yourapi.com", routes: router.routes))
+middlewares.use(GatewayMiddleware(to: "https://yourapi.com", whenNotIn: router.routes))
 // or
-middlewares.use(GatewayMiddleware(to: "https://yourapi.com", routes: ["/GET/api/v1/login"]))
+middlewares.use(GatewayMiddleware(to: "https://yourapi.com", whenNotIn: ["/GET/api/v1/login"]))
 ```
 
 In the first one any request with different path to the paths included in `router.routes` will be requested to `https://yourapi.com` with the same params & headers. 
