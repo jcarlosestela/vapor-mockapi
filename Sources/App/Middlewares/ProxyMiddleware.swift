@@ -9,7 +9,7 @@ import Foundation
 import Vapor
 
 /// This middleware provides the feature of calling to your original API with the same params & headers received
-final class GatewayMiddleware: Middleware {
+final class ProxyMiddleware: Middleware {
     
     // MARK: - Private attributes
     

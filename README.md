@@ -3,7 +3,7 @@
 ----
 
 ![Language](https://img.shields.io/badge/Language-Swift-orange.svg)
-![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.2-blue.svg)
 
 A quick way for creating mock APIs without taking so much time.
 
@@ -88,18 +88,20 @@ An example of usage could be:
 JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badRequest, every: 1)
 ```
 
-## GatewayMiddleware
+## ProxyMiddleware
 
 This middleware provides the feature of calling to your original API with the same params & headers received. This is very useful if you want to mock some method of your API but not the full API (and you want the original behaviour).  
 
 You have two ways of using it:
 
 ```swift
-middlewares.use(GatewayMiddleware(to: "https://yourapi.com", whenNotIn: router.routes))
+middlewares.use(ProxyMiddleware(to: "https://yourapi.com", whenNotIn: router.routes, savingResponses: true))
 // or
-middlewares.use(GatewayMiddleware(to: "https://yourapi.com", whenNotIn: ["/GET/api/v1/login"]))
+middlewares.use(ProxyMiddleware(to: "https://yourapi.com", whenNotIn: ["/GET/api/v1/login"]))
 ```
 
 In the first one any request with different path to the paths included in `router.routes` will be requested to `https://yourapi.com` with the same params & headers. 
 
-In the second one any request with different path to "/GET/api/v1/login" will be requested to `https://yourapi.com` with the same params & headers.
+In the second one any request with different path to `"/GET/api/v1/login"` will be requested to `https://yourapi.com` with the same params & headers.
+
+The third indicates that all responses from the original API will be saved in the `Public` folder. This param is optional, the default value is `false`.

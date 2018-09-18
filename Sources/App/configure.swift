@@ -13,7 +13,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
     middlewares.use(MockMiddleware()) // A middleware for adding features to mock reponses
-    // middlewares.use(GatewayMiddleware(to: "https://path/to/your/ws", whenNotIn: router.routes))
-    // middlewares.use(GatewayMiddleware(to: "https://path/to/your/ws", whenNotIn: ["/GET/v1/api/test"]))
+    // middlewares.use(ProxyMiddleware(to: "https://path/to/your/ws", whenNotIn: router.routes, savingResponses: true))
+    // middlewares.use(ProxyMiddleware(to: "https://path/to/your/ws", whenNotIn: ["/GET/v1/api/test"]))
     services.register(middlewares)
 }
