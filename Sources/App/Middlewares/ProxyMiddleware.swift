@@ -19,30 +19,30 @@ final class ProxyMiddleware: Middleware {
     
     // MARK: - Public methods
     
-    /// Instantiate a new GatewayMiddleware providing the url of your server API and the routes that you don't want to manage in the MockAPI
+    /// Instantiate a new ProxyMiddleware providing the url of your server API and the routes that you don't want to manage in the MockAPI
     /// Example of usage:
-    /// middlewares.use(GatewayMiddleware(to: "https://yourapi.com", routes: router.routes))
+    /// middlewares.use(ProxyMiddleware(to: "https://yourapi.com", routes: router.routes))
     /// That means that any request with different path to the paths included in `router.routes` will be requested to `https://yourapi.com` with the same params & headers.
     ///
     /// - Parameters:
     ///   - url: The url of your final API
     ///   - routes: The routes to be ignored
-    ///   - savingResponses: Indicates to GateMiddleware if you want to save the responses of routes not included in the 'routes' param. (default false)
+    ///   - savingResponses: Indicates to ProxyMiddleware if you want to save the responses of routes not included in the 'routes' param. (default false)
     init(to url: String, whenNotIn routes: [Route<Responder>], savingResponses saveResponses: Bool = false) {
         self.routes = routes.readableRoutes()
         self.url = url
         self.saveResponses = saveResponses
     }
     
-    /// Instantiate a new GatewayMiddleware providing the url of your server API and the routes that you don't want to manage in the MockAPI
+    /// Instantiate a new ProxyMiddleware providing the url of your server API and the routes that you don't want to manage in the MockAPI
     /// Example of usage:
-    /// middlewares.use(GatewayMiddleware(to: "https://yourapi.com", routes: ["/GET/api/v1/login"]))
+    /// middlewares.use(ProxyMiddleware(to: "https://yourapi.com", routes: ["/GET/api/v1/login"]))
     /// That means that any request with different path to "/GET/api/v1/login" will be requested to `https://yourapi.com` with the same params & headers.
     ///
     /// - Parameters:
     ///   - url: The url of your final API
     ///   - routes: The routes to be ignored
-    ///   - savingResponses: Indicates to GateMiddleware if you want to save the responses of routes not included in the 'routes' param. (default false)
+    ///   - savingResponses: Indicates to ProxyMiddleware if you want to save the responses of routes not included in the 'routes' param. (default false)
     init(to url: String, whenNotIn routes: [String], savingResponses saveResponses: Bool = false) {
         self.routes = routes
         self.url = url
