@@ -16,23 +16,18 @@ protocol Mockable {
     
     /// The path for the request
     var path: String { get }
+
+    /// The response code
+    var code: Int { get }
     
-    /// Method for handling the response given the request
-    ///
-    /// - Parameter req: the request
-    /// - Returns: a `Future<Response>` instance
-    func handleResponse(_ req: Request) throws -> Future<Response>
+    /// Payload for response
+    var payload: Data? { get }
+    
+    /// Optional headers to return
+    var headers: [String: String]? { get }
 }
 
 extension Mockable {
-    
-    /// Method for adding the mock configuration to a Router
-    ///
-    /// - Parameter router: The Router
-    func addRoute(to router: Router) throws {
-        router.on(self.method, at: self.path, use: handleResponse)
-    }
-    
     /// Call this method if you want that your request fail every X times.
     /// Example of usage:
     /// let mock = JSONFileMock(...).fail(with: .badRequest, every: 2)

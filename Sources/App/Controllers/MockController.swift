@@ -2,28 +2,35 @@
 //  MockController.swift
 //  App
 //
-//  Created by José Estela on 9/7/18.
+//  Created by Eduardo González on 29/10/2018.
 //
 
 import Foundation
 import Vapor
 
-struct MockController: RouteCollection {
+struct MockController {
     
-    func boot(router: Router) throws {
-        try router.register(mocks: [
-            // JSONFileMock(method: .GET, path: "api/test", file: "test.json").delay(1.0).fail(with: .badGateway, every: 1),
-            // ModelMock(method: .GET, path: "api/test2", mock: AnyObject(name: "test")),
-            // StatusMock(method: .GET, path: "api/test/error", status: .notAcceptable).delay(1.5)
-        ])
-    }
-}
-
-extension Router {
+    let mock: Mockable
     
-    func register(mocks: [Mockable]) throws {
-        try mocks.forEach { mock in
-            try mock.addRoute(to: self)
+    func handleResponse(_ req: Request) throws -> Future<HTTPResponse> {
+        var response = HTTPResponse()
+        
+        // Add Status
+        response.status = HTTPResponseStatus(statusCode: mock.code)
+        
+        // Add Body
+        if let data = mock.payload {
+            response.body = HTTPBody(data: data)
         }
+        
+        // Add Headers
+        var headers = HTTPHeaders()
+        if let mockHeaders = mock.headers {
+            for header in mockHeaders {
+                headers.add(name: header.key, value: header.value)
+            }
+            response.headers = headers
+        }
+        return req.future(response)
     }
 }
