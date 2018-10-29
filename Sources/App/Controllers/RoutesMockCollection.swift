@@ -8,7 +8,7 @@
 import Foundation
 import Vapor
 
-struct MockController: RouteCollection {
+struct RoutesMockCollection: RouteCollection {
     
     func boot(router: Router) throws {
         try router.register(mocks: [
@@ -20,10 +20,14 @@ struct MockController: RouteCollection {
 }
 
 extension Router {
-    
+
     func register(mocks: [Mockable]) throws {
         try mocks.forEach { mock in
-            try mock.addRoute(to: self)
+            try self.addRoute(to: mock)
         }
+    }
+    
+    func addRoute(to mock: Mockable) throws {
+        self.on(mock.method, at: mock.path, use: mock.handleResponse)
     }
 }
