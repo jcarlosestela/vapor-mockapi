@@ -15,7 +15,7 @@ struct Mock: Mockable {
     let payload: Data?
     let headers: [String: String]?
     
-    init<T: Codable>(method: HTTPMethod, path: String, code: Int, model: T, headers: [String: String]? = nil) {
+    init<T: Codable>(method: HTTPMethod, path: String, code: Int = 200, model: T, headers: [String: String]? = nil) {
         self.method = method
         self.path = path
         self.code = code
@@ -23,7 +23,7 @@ struct Mock: Mockable {
         self.headers = headers
     }
     
-    init(method: HTTPMethod, path: String, code: Int, file: String, headers: [String: String]? = nil) {
+    init(method: HTTPMethod, path: String, code: Int = 200, file: String, headers: [String: String]? = nil) {
         self.method = method
         self.path = path
         self.code = code

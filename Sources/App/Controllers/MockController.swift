@@ -14,6 +14,7 @@ struct MockController {
     
     func handleResponse(_ req: Request) throws -> Future<HTTPResponse> {
         var response = HTTPResponse()
+        
         // Add Status
         response.status = HTTPResponseStatus(statusCode: mock.code)
         
@@ -22,7 +23,7 @@ struct MockController {
             response.body = HTTPBody(data: data)
         }
         
-        // Headers
+        // Add Headers
         var headers = HTTPHeaders()
         if let mockHeaders = mock.headers {
             for header in mockHeaders {
